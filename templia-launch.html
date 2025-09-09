@@ -3,20 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> src="Templiacrop.png" | Coming Soon</title>
+  <title>Templia | Coming Soon</title>
 
   <style>
-    /* If you have font files, replace with @font-face and correct paths */
-    @font-face {
-      font-family: 'Kelin Eator';
-      src: url('KelinEator.ttf') format('truetype');
-    }
-
-    @font-face {
-      font-family: 'TT Drugs';
-      src: url('TTDrugs.ttf') format('truetype');
-    }
-
     body {
       margin: 0;
       padding: 0;
@@ -56,11 +45,12 @@
       right: -200px;
     }
 
-    .logo {
-      font-family: 'Kelin Eator', serif;
-      font-size: 4rem;
-      color: #e6a2e5;
-      margin: 0;
+    /* Logo image */
+    .logo img {
+      width: 280px; /* adjust size */
+      max-width: 90%;
+      height: auto;
+      margin-bottom: 1.5rem;
       position: relative;
       z-index: 1;
     }
@@ -88,9 +78,6 @@
     }
 
     @media (max-width: 600px) {
-      .logo {
-        font-size: 2.5rem;
-      }
       .subtitle {
         font-size: 1.5rem;
       }
@@ -105,7 +92,10 @@
 </head>
 <body>
 
-  <div class="logo">templia</div>
+  <!-- Replace with your logo -->
+  <div class="logo">
+    <img src="Templiacrop.png" alt="Templia Logo">
+  </div>
 
   <h2 class="subtitle">Coming Soon</h2>
   <div class="countdown" id="countdown"></div>
@@ -139,4 +129,3 @@
 
 </body>
 </html>
-
