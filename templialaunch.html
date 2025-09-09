@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Templia | Coming Soon</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="logo">
+    <h1>templia</h1>
+  </div>
+
+  <h2 class="subtitle">Coming Soon</h2>
+  <div class="countdown" id="countdown"></div>
+
+  <div class="verse">
+    “Do you not know that your bodies are temples of the Holy Spirit, who is in you, whom you have received from God? You are not your own;”<br>
+    <strong>1 Corinthians 6:19</strong>
+  </div>
+
+  <script>
+    const countdown = document.getElementById("countdown");
+    const launchDate = new Date("Dec 7, 2025 00:00:00").getTime();
+
+    const timer = setInterval(function() {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdown.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+      if (distance < 0) {
+        clearInterval(timer);
+        countdown.innerHTML = "We’ve Launched!";
+      }
+    }, 1000);
+  </script>
+
+</body>
+</html>
