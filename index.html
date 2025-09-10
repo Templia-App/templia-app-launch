@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Templia | Coming Soon</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #1b1a1a;
+      font-family: 'TT Drugs', sans-serif;
+      color: #e4e4e4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Gradient glow background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: -webkit-linear-gradient(135deg, #0606cc, #3650b9, #a92aeb, #4d33bd);
+      background: linear-gradient(135deg, #0606cc, #3650b9, #a92aeb, #4d33bd);
+      opacity: 0.7;
+      z-index: 0;
+    }
+
+    /* Logo image */
+    .logo img {
+      width: 500px; /* Larger logo */
+      max-width: 95%;
+      display: block;
+      margin: 0 auto 1rem auto;
+
+      /* Smooth fade into page background */
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 85%, rgba(0,0,0,0) 100%);
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-size: cover;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 85%, rgba(0,0,0,0) 100%);
+      mask-repeat: no-repeat;
+      mask-size: cover;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Coming Soon text */
+    .subtitle {
+      font-size: 1.3rem; /* smaller */
+      margin: 0.5rem 0;
+      z-index: 1;
+    }
+
+    /* Countdown (shrunk) */
+    .countdown {
+      font-size: 1rem; /* smaller timer */
+      letter-spacing: 1.5px;
+      margin: 1rem 0;
+      z-index: 1;
+    }
+
+    /* Bible verse */
+    .verse {
+      font-size: 1rem;
+      max-width: 600px;
+      margin-top: 5rem;
+      padding: 0 1rem;
+      line-height: 1.6;
+      font-style: italic;
+      z-index: 1;
+    }
+
+    @media (max-width: 600px) {
+      .logo img {
+        width: 300px; /* smaller on mobile */
+      }
+      .subtitle {
+        font-size: 1rem;
+      }
+      .countdown {
+        font-size: 0.9rem;
+      }
+      .verse {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="logo">
+    <img src="Templiacrop.png" alt="Templia Logo">
+  </div>
+
+  <h2 class="subtitle">Coming Soon</h2>
+  <div class="countdown" id="countdown"></div>
+
+  <div class="verse">
+    <em>“Do you not know that your bodies are temples of the Holy Spirit, who is in you, whom you have received from God? You are not your own;”</em><br>
+    <strong>1 Corinthians 6:19</strong>
+  </div>
+
+  <script>
+    const countdown = document.getElementById("countdown");
+    const launchDate = new Date("Dec 7, 2025 00:00:00").getTime();
+
+    const timer = setInterval(function() {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdown.innerHTML = days + ":" + hours + ":" + minutes + ":" + seconds + "";
+
+      if (distance < 0) {
+        clearInterval(timer);
+        countdown.innerHTML = "We’ve Launched!";
+      }
+    }, 1000);
+  </script>
+
+</body>
+</html>
