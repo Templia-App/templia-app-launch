@@ -5,16 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Templia | Coming Soon</title>
 
-
   <link rel="icon" type="image/png" href="Templia Favicon.png" />
 
   <style>
+    :root {
+      --bg: #1b1a1a;
+      --text: #e4e4e4;
+      --muted: #bfbfbf;
+      --accent: #a92aeb;
+      --accent-2: #4d33bd;
+      --ok: #5bd68a;
+      --err: #ff6b6b;
+    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
-      background-color: #1b1a1a;
+      background-color: var(--bg);
       font-family: 'TT Drugs', sans-serif;
-      color: #e4e4e4;
+      color: var(--text);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -29,30 +38,21 @@
     body::before {
       content: "";
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: linear-gradient(135deg, #0606cc, #3650b9, #a92aeb, #4d33bd);
       background-size: 400% 400%;
       animation: moveGradient 15s ease infinite;
       opacity: 0.7;
       z-index: 0;
     }
-
     @keyframes moveGradient {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-    /* Logo */
+    /* Content */
     .logo img {
       width: 500px;
       max-width: 95%;
@@ -67,29 +67,85 @@
       position: relative;
       z-index: 1;
     }
-
-    .subtitle {
-      font-size: 1.3rem;
-      margin: 0.5rem 0;
-      z-index: 1;
-    }
-
-    .countdown {
-      font-size: 2rem;
-      letter-spacing: 1.5px;
-      margin: 1rem 0;
-      z-index: 1;
-    }
-
+    .subtitle { font-size: 1.3rem; margin: 0.5rem 0; z-index: 1; }
+    .countdown { font-size: 2rem; letter-spacing: 1.5px; margin: 1rem 0; z-index: 1; }
     .verse {
-      font-size: 1rem;
-      max-width: 600px;
-      margin-top: 5rem;
-      padding: 0 1rem;
-      line-height: 1.6;
-      font-style: italic;
-      z-index: 1;
+      font-size: 1rem; max-width: 600px; margin-top: 5rem; padding: 0 1rem;
+      line-height: 1.6; font-style: italic; z-index: 1;
     }
+
+    /* --- Email Signup Section --- */
+    .signup {
+      width: 100%;
+      max-width: 560px;
+      margin-top: 1.25rem;
+      z-index: 2;
+      position: relative;
+    }
+    .signup h3 {
+      margin: 0 0 0.5rem 0;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+    .signup p.hint {
+      margin: 0 0 1rem 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+    .signup form {
+      display: flex;
+      gap: 0.5rem;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .signup input[type="email"] {
+      flex: 1 1 320px;
+      min-width: 240px;
+      padding: 0.85rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.25);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .signup input[type="email"]::placeholder { color: #cfcfcf; }
+    .signup input[type="email"]:focus { border-color: var(--accent); }
+
+    .signup button[type="submit"] {
+      padding: 0.85rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.06s ease, opacity 0.2s ease;
+    }
+    .signup button[type="submit"]:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+    .signup .consent {
+      display: flex; align-items: center; gap: 0.5rem;
+      justify-content: center;
+      font-size: 0.9rem;
+      margin-top: 0.75rem;
+      color: var(--muted);
+    }
+    .signup .consent input { transform: translateY(1px); }
+
+    .msg {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .msg.ok { color: var(--ok); }
+    .msg.err { color: var(--err); }
+
+    /* honeypot (hidden field against bots) */
+    .hiddenpot { position: absolute; left: -9999px; top: -9999px; height: 0; width: 0; overflow: hidden; }
 
     @media (max-width: 600px) {
       .logo img { width: 300px; }
@@ -107,32 +163,133 @@
   <h2 class="subtitle">Launching soon on your favorite app store!</h2>
   <div class="countdown" id="countdown"></div>
 
+  <!-- Email Signup -->
+  <section class="signup" aria-labelledby="signup-title">
+    <h3 id="signup-title">Get notified when we launch</h3>
+    <p class="hint">No spam. Unsubscribe anytime.</p>
+
+    <form id="email-form" novalidate>
+      <input
+        id="email-input"
+        name="email"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        placeholder="Enter your email"
+        required
+        aria-label="Email address"
+      />
+      <button id="email-submit" type="submit">Notify me</button>
+
+      <!-- Consent checkbox (recommended for compliance) -->
+      <div class="consent">
+        <input id="consent" type="checkbox" required />
+        <label for="consent">I agree to receive emails from Templia.</label>
+      </div>
+
+      <!-- Honeypot -->
+      <input class="hiddenpot" type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
+    </form>
+
+    <div id="message" class="msg" role="status" aria-live="polite"></div>
+  </section>
+
   <div class="verse">
     <em>“Do you not know that your bodies are temples of the Holy Spirit, who is in you, whom you have received from God? You are not your own;”</em><br />
     <strong>1 Corinthians 6:19</strong>
   </div>
 
+  <!-- Supabase JS (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
+    /* ---------- Countdown ---------- */
     const countdown = document.getElementById("countdown");
     const launchDate = new Date("Dec 7, 2025 00:00:00").getTime();
-
     const timer = setInterval(function () {
       const now = new Date().getTime();
       const distance = launchDate - now;
-
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      countdown.innerHTML = `${days}:${hours}:${minutes}:${seconds}`;
-
-      if (distance < 0) {
-        clearInterval(timer);
-        countdown.innerHTML = "We’ve Launched!";
-      }
+      countdown.textContent = `${days}:${hours}:${minutes}:${seconds}`;
+      if (distance < 0) { clearInterval(timer); countdown.textContent = "We’ve Launched!"; }
     }, 1000);
+
+    /* ---------- Email Signup (Supabase) ---------- */
+    // 1) Replace with your project values:
+    const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";
+
+    // 2) Initialize client:
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // 3) Helpers:
+    const form = document.getElementById('email-form');
+    const emailInput = document.getElementById('email-input');
+    const submitBtn = document.getElementById('email-submit');
+    const msg = document.getElementById('message');
+    const consent = document.getElementById('consent');
+    const honeypot = document.getElementById('company');
+
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i; // simple, resilient validation
+
+    function setMessage(text, isError = false) {
+      msg.textContent = text;
+      msg.className = 'msg ' + (isError ? 'err' : 'ok');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+      msg.className = 'msg';
+
+      // bot check
+      if (honeypot.value) {
+        return; // silently drop bots
+      }
+
+      const email = (emailInput.value || '').trim().toLowerCase();
+      if (!emailRegex.test(email)) {
+        setMessage('Please enter a valid email address.', true);
+        return;
+      }
+      if (!consent.checked) {
+        setMessage('Please agree to receive emails from Templia.', true);
+        return;
+      }
+
+      submitBtn.disabled = true;
+
+      try {
+        // Insert into table: newsletter_subscribers
+        const { error } = await sb.from('newsletter_subscribers').insert({
+          email,
+          source: 'coming_soon',
+          consent: true
+        });
+
+        if (error) {
+          if (error.code === '23505') {
+            // unique violation
+            setMessage('You’re already on the list. Thank you!');
+          } else {
+            setMessage('Something went wrong. Please try again in a moment.', true);
+            console.error(error);
+          }
+        } else {
+          setMessage('Thanks! You’re on the list 🎉');
+          form.reset();
+        }
+      } catch (err) {
+        console.error(err);
+        setMessage('Network error. Please try again.', true);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
   </script>
 </body>
 </html>
-
