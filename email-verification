@@ -1,0 +1,513 @@
+<!-- Verify Email | Templia-style landing (HTML + CSS) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Templia | Verify Email</title>
+
+  <!-- Optional: Lucide icons via ES module (keeps visuals close to the React version) -->
+  <script type="module">
+    import { createIcons, icons } from "https://unpkg.com/lucide@latest/dist/esm/lucide.js";
+    window.lucideCreateIcons = () => createIcons({ icons });
+  </script>
+
+  <style>
+    :root {
+      --bg: #1b1a1a;
+      --text: #e4e4e4;
+      --muted: #bfbfbf;
+      --accent: #a92aeb;
+      --accent-2: #4d33bd;
+      --ok: #5bd68a;
+      --err: #ff6b6b;
+
+      --border: rgba(255,255,255,0.10);
+      --glass: rgba(27, 26, 26, 0.75);
+      --glass-2: rgba(255,255,255,0.04);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* Background base */
+    .page {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    /* Moving gradient glow (Templia-style) */
+    .glow {
+      position: absolute;
+      inset: -35%;
+      filter: blur(64px);
+      opacity: 0.35;
+      animation: templiaGlow 10s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .glow::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #0606cc, #3650b9, #a92aeb, #4d33bd);
+    }
+
+    /* Subtle vignette */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.40), transparent, rgba(0,0,0,0.50));
+      pointer-events: none;
+    }
+
+    /* Centering */
+    .wrap {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    /* Brand header */
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+
+    .brand-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+      flex: 0 0 auto;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .brand-sub {
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Card */
+    .card {
+      border-radius: 24px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 30px 90px rgba(0,0,0,0.45);
+    }
+
+    @media (min-width: 768px) {
+      .card { padding: 30px; }
+    }
+
+    .row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .status-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--glass-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      color: var(--text);
+    }
+
+    .icon.ok { color: var(--ok); }
+    .icon.err { color: var(--err); }
+
+    .content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--text);
+    }
+
+    @media (min-width: 768px) {
+      .h1 { font-size: 26px; }
+    }
+
+    .p {
+      margin: 6px 0 0 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .email-line {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .email-line .email {
+      font-weight: 700;
+    }
+
+    .hint {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .hint .path {
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .divider {
+      height: 1px;
+      width: 100%;
+      background: var(--border);
+      margin: 22px 0;
+    }
+
+    /* Buttons */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .btn {
+      width: 100%;
+      border-radius: 18px;
+      padding: 13px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 120ms ease, opacity 120ms ease;
+      user-select: none;
+    }
+
+    .btn:active { transform: scale(0.99); }
+    .btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn-ghost {
+      background: var(--glass-2);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-outline {
+      margin-top: 12px;
+      background: transparent;
+      color: var(--muted);
+      border-color: var(--border);
+    }
+
+    /* Footer verse */
+    .verse {
+      margin-top: 22px;
+      text-align: center;
+    }
+
+    .verse p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.55;
+      color: rgba(228,228,228,0.80);
+    }
+
+    .verse .ref {
+      margin-top: 6px;
+      font-weight: 800;
+      color: rgba(228,228,228,0.90);
+    }
+
+    .below {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(191,191,191,0.75);
+    }
+
+    /* Spinner */
+    .spin {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes templiaGlow {
+      0%   { transform: translate3d(-2%, -2%, 0) rotate(0deg) scale(1.00); }
+      50%  { transform: translate3d( 2%,  2%, 0) rotate(8deg) scale(1.08); }
+      100% { transform: translate3d(-2%, -2%, 0) rotate(0deg) scale(1.00); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="glow"></div>
+    <div class="vignette"></div>
+
+    <div class="wrap">
+      <div class="container">
+        <!-- Brand header -->
+        <div class="brand">
+          <div class="brand-inner">
+            <div class="logo"></div>
+            <div>
+              <div class="brand-title">Templia</div>
+              <div class="brand-sub">Email verification</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card -->
+        <div class="card" id="card">
+          <div class="row">
+            <!-- Status icon -->
+            <div class="status-badge" id="statusBadge" aria-hidden="true">
+              <!-- default: checking -->
+              <i data-lucide="loader-2" class="icon spin" id="statusIcon"></i>
+            </div>
+
+            <div class="content">
+              <h1 class="h1" id="title">Verify your email</h1>
+              <p class="p" id="message">Checking verification status…</p>
+
+              <div id="emailBlock" style="display:none;">
+                <p class="email-line">Sending to: <span class="email" id="emailText"></span></p>
+              </div>
+
+              <div id="hintBlock" class="hint" style="display:none;">
+                Optional: pass your email as <span class="path">/verify-email?email=you@domain.com</span> to enable resend.
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="grid">
+            <button class="btn btn-primary" id="continueBtn" type="button">
+              Continue to Templia
+              <i data-lucide="arrow-right" class="icon" style="color:#fff;"></i>
+            </button>
+
+            <button class="btn btn-ghost" id="resendBtn" type="button" title="Add ?email= to enable resend">
+              <i data-lucide="refresh-cw" class="icon"></i>
+              Resend email
+            </button>
+          </div>
+
+          <button class="btn btn-outline" id="tipsBtn" type="button">
+            Having trouble? Tips for finding your email
+          </button>
+
+          <div class="verse">
+            <p>
+              “Do you not know that your bodies are temples of the Holy Spirit, who is in you, whom you have received from God?
+              You are not your own;”
+            </p>
+            <p class="ref">1 Corinthians 6:19</p>
+          </div>
+        </div>
+
+        <div class="below">
+          If you clicked the verification link and came back here, you’re all set.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- State machine (matches the React logic) ----------
+    // Status values: checking | waiting | verified | error
+    const els = {
+      title: document.getElementById('title'),
+      message: document.getElementById('message'),
+      statusBadge: document.getElementById('statusBadge'),
+      statusIcon: document.getElementById('statusIcon'),
+      emailBlock: document.getElementById('emailBlock'),
+      emailText: document.getElementById('emailText'),
+      hintBlock: document.getElementById('hintBlock'),
+      continueBtn: document.getElementById('continueBtn'),
+      resendBtn: document.getElementById('resendBtn'),
+      tipsBtn: document.getElementById('tipsBtn'),
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const emailParam = params.get('email') || '';
+
+    const hash = window.location.hash || '';
+    const hasAccessTokenInHash =
+      /access_token=/.test(hash) || /refresh_token=/.test(hash) || /type=signup/.test(hash);
+
+    function setStatus(status, msg) {
+      // Reset icon
+      els.statusIcon.className = 'icon';
+      els.statusIcon.removeAttribute('data-lucide');
+
+      if (status === 'checking') {
+        els.title.textContent = 'Verify your email';
+        els.message.textContent = msg || 'Checking verification status…';
+        els.statusIcon.setAttribute('data-lucide', 'loader-2');
+        els.statusIcon.classList.add('spin');
+        els.statusIcon.style.color = 'var(--text)';
+      }
+
+      if (status === 'waiting') {
+        els.title.textContent = 'Verify your email';
+        els.message.textContent = msg || 'Please check your inbox and click the verification link to continue.';
+        els.statusIcon.setAttribute('data-lucide', 'mail');
+        els.statusIcon.style.color = 'var(--text)';
+      }
+
+      if (status === 'verified') {
+        els.title.textContent = 'Email verified';
+        els.message.textContent = msg || 'Your email has been verified. You can continue into Templia.';
+        els.statusIcon.setAttribute('data-lucide', 'check-circle-2');
+        els.statusIcon.style.color = 'var(--ok)';
+      }
+
+      if (status === 'error') {
+        els.title.textContent = 'Verification issue';
+        els.message.textContent = msg || 'We couldn’t confirm your email. Please try again.';
+        els.statusIcon.setAttribute('data-lucide', 'alert-triangle');
+        els.statusIcon.style.color = 'var(--err)';
+      }
+
+      // Email block / hint block
+      if (emailParam) {
+        els.emailText.textContent = emailParam;
+        els.emailBlock.style.display = 'block';
+        els.hintBlock.style.display = 'none';
+        els.resendBtn.title = 'Resend verification email';
+      } else {
+        els.emailBlock.style.display = 'none';
+        els.hintBlock.style.display = 'block';
+        els.resendBtn.title = 'Add ?email= to enable resend';
+      }
+
+      // Re-render lucide icons
+      if (window.lucideCreateIcons) window.lucideCreateIcons();
+    }
+
+    // Initial run (matches React effect)
+    (function init() {
+      try {
+        setStatus('checking', 'Checking verification status…');
+
+        if (hasAccessTokenInHash) {
+          setStatus('verified', 'Your email has been verified. You can continue into Templia.');
+          return;
+        }
+
+        setStatus('waiting', 'Please check your inbox and click the verification link to continue.');
+      } catch (e) {
+        setStatus('error', (e && e.message) ? e.message : 'We couldn’t confirm your email. Please try again.');
+      }
+    })();
+
+    // Buttons (same behavior)
+    els.continueBtn.addEventListener('click', () => {
+      window.location.href = '/'; // or '/app'
+    });
+
+    els.tipsBtn.addEventListener('click', () => {
+      alert('Tip: Check your Spam/Promotions folder. Search for "Templia". If you still don’t see it, try resending.');
+    });
+
+    els.resendBtn.addEventListener('click', async () => {
+      try {
+        if (!emailParam) {
+          setStatus('error', 'Please provide your email (e.g., /verify-email?email=you@domain.com) to resend.');
+          return;
+        }
+
+        els.resendBtn.disabled = true;
+        els.message.textContent = 'Resending verification email…';
+
+        // Optional: replace this with your actual Supabase resend call from your app backend or client.
+        // For pure HTML, we keep the same UX delay used in the React version.
+        await new Promise((r) => setTimeout(r, 700));
+
+        setStatus('waiting', 'Sent. Please check your inbox for a new verification email.');
+      } catch (e) {
+        setStatus('error', (e && e.message) ? e.message : 'Unable to resend. Please try again in a moment.');
+      } finally {
+        els.resendBtn.disabled = false;
+      }
+    });
+
+    // Render lucide icons on load
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.lucideCreateIcons) window.lucideCreateIcons();
+    });
+  </script>
+</body>
+</html>
