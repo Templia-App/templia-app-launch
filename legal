@@ -1,0 +1,575 @@
+<!-- terms-privacy.html
+     Single-file Terms of Service + Privacy Policy page
+     Styled to match your landing page (video background, veil, glass cards, gradients, scroll fade)
+     Replace placeholders: [Effective Date], [Company/Entity Name], [Contact Email], [Address], etc.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Templia | Terms & Privacy</title>
+  <style>
+    /* --------- Base / Reset --------- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; border: none; background: none; color: inherit; cursor: pointer; }
+
+    /* --------- Layout Helpers --------- */
+    .container { width: min(1100px, calc(100% - 48px)); margin: 0 auto; }
+    @media (min-width: 768px) { .container { width: min(1100px, calc(100% - 96px)); } }
+
+    /* --------- Background Video --------- */
+    .page { position: relative; min-height: 100vh; overflow: hidden; }
+    .bg-video {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: -10;
+    }
+    .veil {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.60);
+      z-index: -9;
+      opacity: 1;
+    }
+    .veil.veal-fade { animation: veilFade 1s ease-out forwards; }
+    @keyframes veilFade { 0% { opacity: 1; } 100% { opacity: .6; } }
+
+    /* --------- Page Fade In --------- */
+    .content { position: relative; z-index: 10; opacity: 0; }
+    .content.content-fade-in { animation: contentFadeIn 1s ease-out both; }
+    @keyframes contentFadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --------- Nav --------- */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand img { height: 48px; width: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,.35)); }
+
+    /* --------- Buttons --------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      background: linear-gradient(90deg, #2563eb, #7c3aed);
+    }
+    .btn:hover {
+      transform: translateY(-1px) scale(1.03);
+      box-shadow: 0 20px 50px rgba(124, 58, 237, 0.35);
+      filter: brightness(1.05);
+    }
+    .btn:active { transform: translateY(0) scale(1.01); }
+
+    /* --------- Typography / Badges --------- */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(147, 51, 234, 0.20);
+      border: 1px solid rgba(192, 132, 252, 0.30);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      margin-bottom: 18px;
+    }
+    .pill span { color: #e9d5ff; font-size: 14px; font-weight: 600; }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #93c5fd 0%, #c4b5fd 50%, #d8b4fe 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: gradientShift 8s ease-in-out infinite;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .muted { color: rgba(156, 163, 175, 0.95); font-size: 14px; }
+
+    /* --------- Sections --------- */
+    .hero {
+      padding: 26px 0 18px;
+      text-align: left;
+    }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    @media (min-width: 768px) { .hero h1 { font-size: 48px; } }
+
+    .hero p {
+      margin: 0;
+      max-width: 800px;
+      color: rgba(209, 213, 219, 0.95);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+    @media (min-width: 768px) { .hero p { font-size: 18px; } }
+
+    .section { padding: 18px 0 64px; }
+
+    /* --------- Glass Card --------- */
+    .glass-card {
+      background: rgba(10, 10, 15, 0.30);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+    }
+    .card {
+      border-radius: 24px;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,0.20);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.40);
+    }
+    @media (min-width: 768px) { .card { padding: 32px; } }
+
+    /* --------- Policy Content --------- */
+    .toc {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) { .toc { grid-template-columns: 1fr 1fr; } }
+
+    .toc a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .toc a:hover {
+      transform: translateY(-2px);
+      border-color: rgba(192,132,252,0.40);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .policy-grid {
+      display: grid;
+      gap: 16px;
+    }
+    @media (min-width: 1024px) { .policy-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
+
+    .policy h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+    }
+    @media (min-width: 768px) { .policy h2 { font-size: 26px; } }
+
+    .policy h3 {
+      margin: 18px 0 8px;
+      font-size: 16px;
+      font-weight: 800;
+      color: rgba(233, 213, 255, 0.95);
+    }
+
+    .policy p, .policy li {
+      color: rgba(209, 213, 219, 0.95);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+    .policy ul { margin: 10px 0 0; padding-left: 18px; }
+    .policy li { margin: 6px 0; }
+
+    .notice {
+      border-left: 4px solid rgba(192, 132, 252, 0.85);
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 14px;
+      margin: 14px 0 0;
+    }
+
+    .inline-pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      background: rgba(147, 51, 234, 0.18);
+      color: rgba(233, 213, 255, 0.95);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      margin-right: 8px;
+    }
+
+    /* --------- Scroll Fade --------- */
+    .scroll-fade {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .scroll-fade.scroll-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --------- Footer --------- */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.10);
+      padding: 28px 0;
+      margin-top: 40px;
+    }
+    .footer-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+    }
+    @media (min-width: 768px) {
+      .footer-row { flex-direction: row; text-align: left; }
+    }
+    .footer-left { display: flex; align-items: center; gap: 12px; }
+    .footer-left img { height: 32px; width: auto; }
+    .footer-quote { font-style: italic; }
+
+    /* --------- Reduced Motion --------- */
+    @media (prefers-reduced-motion: reduce) {
+      .veal-fade,
+      .content-fade-in,
+      .text-gradient,
+      .scroll-fade {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <!-- Optional: use same background video as landing page -->
+    <video class="bg-video" autoplay loop muted playsinline>
+      <source src="/Templia login screen video (1)_compressed copy.mp4" type="video/mp4" />
+    </video>
+
+    <div id="veil" class="veil"></div>
+
+    <div id="content" class="content">
+      <!-- NAV -->
+      <header class="container">
+        <nav class="nav">
+          <a class="brand" href="https://templia.app" aria-label="Back to Templia home">
+            <img src="/Templiacrop.png" alt="Templia" />
+          </a>
+
+          <!-- Update to your preferred destination -->
+          <a class="btn" href="https://templia.app/notify">Get notified</a>
+        </nav>
+      </header>
+
+      <!-- HERO -->
+      <section class="container hero">
+        <div class="pill">
+          <span>Policies</span>
+        </div>
+
+        <h1>
+          <span class="text-gradient">Terms of Service</span> &amp; <span class="text-gradient">Privacy Policy</span>
+        </h1>
+
+        <p>
+          This page explains the terms that govern your use of Templia and how we collect, use, and protect your information.
+          Please read carefully. <span class="muted">Last updated: [Effective Date]</span>
+        </p>
+      </section>
+
+      <section class="container section">
+        <!-- Table of Contents -->
+        <div class="card glass-card scroll-fade" style="margin-bottom:16px;">
+          <h2 style="margin:0 0 14px; font-size:18px; font-weight:900;">Quick navigation</h2>
+          <div class="toc">
+            <a href="#terms">
+              <span><span class="inline-pill">1</span>Terms of Service</span>
+              <span class="muted">View</span>
+            </a>
+            <a href="#privacy">
+              <span><span class="inline-pill">2</span>Privacy Policy</span>
+              <span class="muted">View</span>
+            </a>
+            <a href="#cookies">
+              <span><span class="inline-pill">3</span>Cookies</span>
+              <span class="muted">View</span>
+            </a>
+            <a href="#contact">
+              <span><span class="inline-pill">4</span>Contact</span>
+              <span class="muted">View</span>
+            </a>
+          </div>
+
+          <div class="notice">
+            <p style="margin:0;">
+              <strong>Important:</strong> This template is for general informational use and may not fit your specific legal requirements.
+              Consider having a qualified attorney review it for your jurisdiction and business model.
+            </p>
+          </div>
+        </div>
+
+        <div class="policy-grid">
+          <!-- TERMS OF SERVICE -->
+          <article id="terms" class="card glass-card policy scroll-fade">
+            <h2>1. Terms of Service</h2>
+            <p class="muted" style="margin-top:0;">Effective date: [Effective Date] • Entity: [Company/Entity Name]</p>
+
+            <h3>1.1 Acceptance of Terms</h3>
+            <p>
+              By accessing or using Templia (the “Service”), you agree to these Terms of Service (“Terms”). If you do not agree,
+              do not use the Service.
+            </p>
+
+            <h3>1.2 Eligibility</h3>
+            <p>
+              You must be at least 13 years old (or the age of digital consent in your location) to use the Service. If you are
+              using the Service on behalf of an organization, you represent you have authority to bind that organization.
+            </p>
+
+            <h3>1.3 Accounts and Security</h3>
+            <ul>
+              <li>You are responsible for maintaining the confidentiality of your login credentials.</li>
+              <li>You agree to provide accurate information and keep your account information updated.</li>
+              <li>You must promptly notify us of any unauthorized use of your account.</li>
+            </ul>
+
+            <h3>1.4 Subscriptions and Billing</h3>
+            <ul>
+              <li>Premium features may be offered via subscription (“Premium”).</li>
+              <li>Pricing, billing frequency, and renewal terms will be disclosed at checkout.</li>
+              <li>Unless stated otherwise, subscriptions renew automatically until canceled.</li>
+              <li>Refunds (if any) are governed by the policy presented at purchase and applicable law.</li>
+            </ul>
+
+            <h3>1.5 User Content</h3>
+            <p>
+              The Service may allow you to create or store content such as journal entries, reflections, and notes (“User Content”).
+              You retain ownership of your User Content. You grant us a limited license to host, store, process, and display your
+              User Content solely to operate and improve the Service.
+            </p>
+
+            <h3>1.6 Prohibited Conduct</h3>
+            <ul>
+              <li>Using the Service for unlawful, harmful, or abusive purposes.</li>
+              <li>Attempting to gain unauthorized access to the Service or other users’ accounts.</li>
+              <li>Uploading malware or engaging in activities that disrupt or degrade the Service.</li>
+              <li>Copying, reverse engineering, or reselling the Service except where permitted by law.</li>
+            </ul>
+
+            <h3>1.7 Health, Wellness, and Spiritual Disclaimer</h3>
+            <p>
+              Templia provides wellness and faith-based content for informational and inspirational purposes only and is not a
+              substitute for professional medical, mental health, or pastoral counseling. If you are experiencing an emergency
+              or are at risk of self-harm, contact local emergency services immediately.
+            </p>
+
+            <h3>1.8 Intellectual Property</h3>
+            <p>
+              The Service, including its design, text, graphics, and software, is owned by or licensed to [Company/Entity Name]
+              and protected by applicable laws. You may not use our branding without permission.
+            </p>
+
+            <h3>1.9 Termination</h3>
+            <p>
+              We may suspend or terminate access to the Service if you violate these Terms or if required for security or legal reasons.
+              You may stop using the Service at any time.
+            </p>
+
+            <h3>1.10 Limitation of Liability</h3>
+            <p>
+              To the maximum extent permitted by law, [Company/Entity Name] will not be liable for indirect, incidental, special,
+              consequential, or punitive damages, or any loss of data, profits, or revenues arising from your use of the Service.
+            </p>
+
+            <h3>1.11 Changes to These Terms</h3>
+            <p>
+              We may update these Terms from time to time. We will post the updated Terms on this page and revise the effective date.
+              Continued use of the Service after changes means you accept the updated Terms.
+            </p>
+          </article>
+
+          <!-- PRIVACY POLICY -->
+          <article id="privacy" class="card glass-card policy scroll-fade">
+            <h2>2. Privacy Policy</h2>
+            <p class="muted" style="margin-top:0;">Effective date: [Effective Date] • Controller: [Company/Entity Name]</p>
+
+            <h3>2.1 Information We Collect</h3>
+            <ul>
+              <li><strong>Account data:</strong> name, email, login identifiers, and basic profile information you provide.</li>
+              <li><strong>Usage data:</strong> pages viewed, feature interactions, and diagnostic logs.</li>
+              <li><strong>Device data:</strong> browser type, operating system, approximate location (from IP), and identifiers.</li>
+              <li><strong>User Content:</strong> journal entries, prompts, notes, and other content you choose to store.</li>
+              <li><strong>Payments:</strong> if you subscribe, payment details are processed by a third-party provider (we do not store full card numbers).</li>
+            </ul>
+
+            <h3>2.2 How We Use Your Information</h3>
+            <ul>
+              <li>Provide, operate, and maintain the Service.</li>
+              <li>Personalize your experience (e.g., devotionals, prompts, progress views).</li>
+              <li>Process subscriptions and manage billing.</li>
+              <li>Improve performance, security, and user experience.</li>
+              <li>Send service-related messages (e.g., account notices, policy updates).</li>
+            </ul>
+
+            <h3>2.3 How We Share Your Information</h3>
+            <p>
+              We do not sell your personal information. We may share information with:
+            </p>
+            <ul>
+              <li><strong>Service providers</strong> (hosting, analytics, payment processing) to operate the Service.</li>
+              <li><strong>Legal and safety</strong> when required by law or to protect rights, safety, or prevent fraud.</li>
+              <li><strong>Business transfers</strong> in connection with a merger, acquisition, or asset sale.</li>
+            </ul>
+
+            <h3>2.4 Data Retention</h3>
+            <p>
+              We retain personal information for as long as necessary to provide the Service, comply with legal obligations, resolve disputes,
+              and enforce agreements. You may request deletion, subject to legal constraints.
+            </p>
+
+            <h3>2.5 Security</h3>
+            <p>
+              We use administrative, technical, and physical safeguards designed to protect your data. No method of transmission or storage is
+              100% secure; we cannot guarantee absolute security.
+            </p>
+
+            <h3>2.6 Your Rights</h3>
+            <ul>
+              <li>Access, update, or correct your personal information.</li>
+              <li>Request deletion of your personal information (where applicable).</li>
+              <li>Opt out of certain communications.</li>
+              <li>Depending on your location, you may have additional rights (e.g., portability, restriction, objection).</li>
+            </ul>
+
+            <h3>2.7 Children’s Privacy</h3>
+            <p>
+              The Service is not directed to children under 13. If you believe a child has provided personal information, contact us so we can
+              take appropriate action.
+            </p>
+
+            <h3>2.8 International Users</h3>
+            <p>
+              If you access the Service outside the United States, your information may be processed in countries with different data protection
+              laws. By using the Service, you consent to such processing where permitted by law.
+            </p>
+
+            <h3>2.9 Changes to This Privacy Policy</h3>
+            <p>
+              We may update this Privacy Policy from time to time. We will post updates here and revise the effective date.
+            </p>
+          </article>
+        </div>
+
+        <!-- Cookies / Tracking -->
+        <article id="cookies" class="card glass-card policy scroll-fade" style="margin-top:16px;">
+          <h2>3. Cookies</h2>
+          <p class="muted" style="margin-top:0;">Templia may use cookies and similar technologies.</p>
+
+          <h3>3.1 What Cookies Are Used For</h3>
+          <ul>
+            <li><strong>Essential:</strong> authentication, session management, and security.</li>
+            <li><strong>Preferences:</strong> remembering settings and theme choices.</li>
+            <li><strong>Analytics:</strong> understanding usage patterns to improve the Service.</li>
+          </ul>
+
+          <h3>3.2 Your Choices</h3>
+          <p>
+            You can control cookies through your browser settings. Disabling certain cookies may limit functionality.
+          </p>
+        </article>
+
+        <!-- Contact -->
+        <article id="contact" class="card glass-card policy scroll-fade" style="margin-top:16px;">
+          <h2>4. Contact</h2>
+          <p class="muted" style="margin-top:0;">Questions about these policies? We are here to help.</p>
+
+          <ul>
+            <li><strong>Email:</strong> [Contact Email]</li>
+            <li><strong>Company:</strong> [Company/Entity Name]</li>
+            <li><strong>Address:</strong> [Business Address, if applicable]</li>
+          </ul>
+
+          <div class="notice">
+            <p style="margin:0;">
+              For account-related requests (access, deletion, correction), please include the email address associated with your account.
+            </p>
+          </div>
+
+          <div style="margin-top:16px;">
+            <a class="btn" href="https://templia.app/notify">Get notified</a>
+          </div>
+        </article>
+
+        <!-- FOOTER -->
+        <footer class="scroll-fade">
+          <div class="container">
+            <div class="footer-row">
+              <div class="footer-left">
+                <img src="/Templiacrop.png" alt="Templia" />
+                <span class="muted">© 2026 Templia. All rights reserved.</span>
+              </div>
+              <p class="muted footer-quote">"She is clothed with strength and dignity" - Proverbs 31:25</p>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Fade-in and scroll reveal to match landing page behavior
+    window.addEventListener('DOMContentLoaded', () => {
+      const veil = document.getElementById('veil');
+      const content = document.getElementById('content');
+
+      setTimeout(() => {
+        veil.classList.add('veal-fade');
+        content.classList.add('content-fade-in');
+      }, 30);
+
+      const fadeEls = document.querySelectorAll('.scroll-fade');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('scroll-visible');
+        });
+      }, { threshold: 0.1 });
+
+      fadeEls.forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
