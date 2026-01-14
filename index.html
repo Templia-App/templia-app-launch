@@ -1,19 +1,20 @@
-<!-- index.html (single-file HTML + CSS + tiny JS to replace React behavior)
+<!-- landing.html
+     HTML + CSS + tiny JS version of your React LandingPage.
      Notes:
-     - Replace the asset paths (video/logo/images) with your real paths.
-     - Icons are inline SVGs (no React/lucide needed).
-     - JS handles: (1) veil/content fade-in (2) IntersectionObserver scroll reveal
-     - Buttons currently navigate to # (update to your real sign-in URL or app route)
+     - Keeps the same layout/visual style closely, but replaces Tailwind classes with equivalent CSS.
+     - Lucide React icons are replaced with inline SVGs (similar look, no external deps).
+     - Replace asset paths as needed.
+     - Update SIGN IN / CTA links or JS handlers to your real routes.
 -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Templia Landing Page</title>
-  <link rel="icon" type="image/png" href="Templia Favicon.png" />
+  <title>Templia</title>
+
   <style>
-    /* --------- Base / Reset --------- */
+    /* ---------------- Base / Reset ---------------- */
     *, *::before, *::after { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
@@ -25,20 +26,14 @@
     }
     img { max-width: 100%; display: block; }
     a { color: inherit; text-decoration: none; }
-    button {
-      font: inherit;
-      border: none;
-      background: none;
-      color: inherit;
-      cursor: pointer;
-    }
+    button { font: inherit; border: none; background: none; color: inherit; cursor: pointer; }
 
-    /* --------- Layout Helpers --------- */
-    .container { width: min(1100px, calc(100% - 48px)); margin: 0 auto; }
-    @media (min-width: 768px) { .container { width: min(1100px, calc(100% - 96px)); } }
-
-    /* --------- Background Video --------- */
+    /* ---------------- Layout ---------------- */
     .page { position: relative; min-height: 100vh; overflow: hidden; }
+    .container { width: min(1152px, calc(100% - 48px)); margin: 0 auto; }
+    @media (min-width: 768px) { .container { width: min(1152px, calc(100% - 96px)); } }
+
+    /* ---------------- Background video + veil ---------------- */
     .bg-video {
       position: fixed; inset: 0;
       width: 100%; height: 100%;
@@ -54,7 +49,7 @@
     .veil.veal-fade { animation: veilFade 1s ease-out forwards; }
     @keyframes veilFade { 0% { opacity: 1; } 100% { opacity: .6; } }
 
-    /* --------- Page Fade In --------- */
+    /* ---------------- Content fade-in ---------------- */
     .content { position: relative; z-index: 10; opacity: 0; }
     .content.content-fade-in { animation: contentFadeIn 1s ease-out both; }
     @keyframes contentFadeIn {
@@ -62,7 +57,7 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* --------- Nav --------- */
+    /* ---------------- Nav ---------------- */
     .nav {
       display: flex;
       align-items: center;
@@ -74,19 +69,27 @@
       align-items: center;
       gap: 12px;
     }
-    .brand img { height: 48px; width: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,.35)); }
+    .brand img {
+      height: 32px;
+      width: auto;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
+    }
 
-    /* --------- Buttons --------- */
+    /* ---------------- Buttons ---------------- */
     .btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
       padding: 10px 24px;
       border-radius: 12px;
       font-weight: 700;
-      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      color: #fff;
       background: linear-gradient(90deg, #2563eb, #7c3aed);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      user-select: none;
+      white-space: nowrap;
     }
     .btn:hover {
       transform: translateY(-1px) scale(1.03);
@@ -95,14 +98,20 @@
     }
     .btn:active { transform: translateY(0) scale(1.01); }
     .btn.btn-lg { padding: 16px 32px; border-radius: 14px; font-size: 18px; }
-    .btn.btn-xl { padding: 18px 40px; border-radius: 14px; font-size: 20px; }
+    .btn.btn-xl { padding: 20px 40px; border-radius: 14px; font-size: 20px; }
 
-    /* --------- Hero --------- */
+    /* ---------------- Hero ---------------- */
     .hero {
       text-align: center;
       padding: 48px 0 64px;
     }
     @media (min-width: 768px) { .hero { padding: 80px 0 64px; } }
+
+    .hero-content { animation: heroBloom 1.2s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes heroBloom {
+      0% { opacity: 0; transform: translateY(40px) scale(.95); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
 
     .pill {
       display: inline-flex;
@@ -116,7 +125,7 @@
       -webkit-backdrop-filter: blur(10px);
       margin-bottom: 24px;
     }
-    .pill span { color: #e9d5ff; font-size: 14px; font-weight: 600; }
+    .pill .pill-text { color: #e9d5ff; font-size: 14px; font-weight: 600; }
     .pill svg { width: 16px; height: 16px; color: #d8b4fe; }
 
     .hero h1 {
@@ -127,7 +136,23 @@
       font-size: 40px;
     }
     @media (min-width: 768px) { .hero h1 { font-size: 60px; } }
-    @media (min-width: 1024px) { .hero h1 { font-size: 72px; } }
+    @media (min-width: 1024px) { .hero h1 { font-size: 60px; } }
+
+    .with-text {
+      display: inline-block;
+      font-size: 24px;
+      font-weight: 800;
+    }
+    @media (min-width: 768px) { .with-text { font-size: 30px; } }
+    @media (min-width: 1024px) { .with-text { font-size: 60px; } }
+
+    .templia-gif {
+      height: 160px;
+      width: auto;
+      display: inline-block;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
+      margin-top: 6px;
+    }
 
     .text-gradient {
       background: linear-gradient(135deg, #93c5fd 0%, #c4b5fd 50%, #d8b4fe 100%);
@@ -143,48 +168,41 @@
     }
 
     .hero p {
-      margin: 0 auto 28px;
-      max-width: 720px;
+      margin: 0 auto 40px;
+      max-width: 768px;
       color: rgba(209, 213, 219, 0.95);
       font-size: 18px;
       line-height: 1.7;
     }
     @media (min-width: 768px) { .hero p { font-size: 20px; } }
 
-    .hero-content {
-      animation: heroBloom 1.2s cubic-bezier(.2,.7,.2,1) both;
-    }
-    @keyframes heroBloom {
-      0% { opacity: 0; transform: translateY(40px) scale(.95); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* --------- Sections --------- */
+    /* ---------------- Sections ---------------- */
     .section { padding: 64px 0; }
-    .section-title {
-      text-align: center;
-      margin: 0 0 36px;
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: -0.01em;
-    }
-    @media (min-width: 768px) { .section-title { font-size: 40px; } }
 
-    /* --------- Glass Card --------- */
+    /* ---------------- Glass card ---------------- */
     .glass-card {
       background: rgba(10, 10, 15, 0.30);
       backdrop-filter: blur(20px) saturate(150%);
       -webkit-backdrop-filter: blur(20px) saturate(150%);
     }
 
-    /* --------- Features Grid --------- */
+    /* ---------------- Features ---------------- */
+    .section-title {
+      text-align: center;
+      margin: 0 0 48px;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    @media (min-width: 768px) { .section-title { font-size: 40px; } }
+
     .grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
+      gap: 24px;
     }
-    @media (min-width: 768px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 18px; } }
-    @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 18px; } }
+    @media (min-width: 768px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
 
     .feature-card {
       border-radius: 20px;
@@ -198,6 +216,7 @@
       border-color: rgba(192, 132, 252, 0.40);
       box-shadow: 0 20px 50px rgba(124, 58, 237, 0.30);
     }
+
     .icon-box {
       width: 56px; height: 56px;
       border-radius: 14px;
@@ -207,9 +226,11 @@
       box-shadow: 0 12px 24px rgba(0,0,0,0.35);
       margin-bottom: 16px;
       transition: transform .2s ease;
+      color: #fff;
     }
     .feature-card:hover .icon-box { transform: scale(1.08); }
-    .icon-box svg { width: 28px; height: 28px; color: #fff; }
+    .icon-box svg { width: 32px; height: 32px; }
+
     .feature-card h3 {
       margin: 0 0 8px;
       font-size: 20px;
@@ -222,7 +243,8 @@
       line-height: 1.65;
     }
 
-    /* --------- Octavia Section --------- */
+    /* ---------------- Meet Octavia ---------------- */
+    .profile-wrap { max-width: 896px; margin: 0 auto; }
     .profile-card {
       border-radius: 24px;
       padding: 32px;
@@ -234,23 +256,23 @@
     .profile-row {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 32px;
       align-items: center;
     }
     @media (min-width: 768px) {
-      .profile-row { flex-direction: row; gap: 32px; align-items: center; }
+      .profile-row { flex-direction: row; align-items: center; }
     }
 
-    .avatar-wrap {
-      flex: 0 0 auto;
+    .avatar-ring {
       width: 128px; height: 128px;
       border-radius: 999px;
       padding: 4px;
       background: linear-gradient(135deg, #c084fc, #60a5fa);
       box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+      flex: 0 0 auto;
     }
-    @media (min-width: 768px) { .avatar-wrap { width: 160px; height: 160px; } }
-    .avatar-wrap img {
+    @media (min-width: 768px) { .avatar-ring { width: 160px; height: 160px; } }
+    .avatar-ring img {
       width: 100%; height: 100%;
       border-radius: 999px;
       object-fit: cover;
@@ -258,14 +280,17 @@
 
     .profile-text { flex: 1; text-align: center; }
     @media (min-width: 768px) { .profile-text { text-align: left; } }
+
     .profile-text h2 {
-      margin: 0 0 10px;
+      margin: 0 0 12px;
       font-size: 30px;
       font-weight: 900;
+      letter-spacing: -0.01em;
     }
     @media (min-width: 768px) { .profile-text h2 { font-size: 40px; } }
+
     .subtitle {
-      margin: 0 0 14px;
+      margin: 0 0 16px;
       color: rgba(196, 181, 253, 0.95);
       font-weight: 700;
       font-size: 18px;
@@ -282,23 +307,31 @@
       font-style: italic;
     }
 
-    /* --------- CTA --------- */
-    .cta { text-align: center; }
-    .cta h2 {
+    /* ---------------- CTA ---------------- */
+    .cta-wrap { max-width: 896px; margin: 0 auto; text-align: center; }
+    .cta-wrap h2 {
       margin: 0 0 14px;
       font-size: 30px;
       font-weight: 900;
+      letter-spacing: -0.01em;
     }
-    @media (min-width: 768px) { .cta h2 { font-size: 40px; } }
-    .cta p {
-      margin: 0 auto 28px;
-      max-width: 620px;
+    @media (min-width: 768px) { .cta-wrap h2 { font-size: 40px; } }
+
+    .cta-wrap p {
+      margin: 0 auto 40px;
+      max-width: 640px;
       color: rgba(209, 213, 219, 0.95);
       font-size: 18px;
       line-height: 1.7;
     }
 
-    /* --------- Footer --------- */
+    .btn .arrow {
+      width: 22px; height: 22px;
+      transition: transform .2s ease;
+    }
+    .btn:hover .arrow { transform: translateX(4px); }
+
+    /* ---------------- Footer ---------------- */
     footer {
       border-top: 1px solid rgba(255,255,255,0.10);
       padding: 28px 0;
@@ -318,9 +351,18 @@
     .footer-left { display: flex; align-items: center; gap: 12px; }
     .footer-left img { height: 32px; width: auto; }
     .muted { color: rgba(156, 163, 175, 0.95); font-size: 14px; }
-    .footer-quote { font-style: italic; }
+    .terms-link {
+      background: none;
+      padding: 0;
+      border: 0;
+      color: rgba(156, 163, 175, 0.95);
+      text-decoration: underline;
+      cursor: pointer;
+      transition: color .2s ease;
+    }
+    .terms-link:hover { color: #fff; }
 
-    /* --------- Scroll Fade (IntersectionObserver) --------- */
+    /* ---------------- Scroll reveal ---------------- */
     .scroll-fade {
       opacity: 0;
       transform: translateY(30px);
@@ -331,7 +373,7 @@
       transform: translateY(0);
     }
 
-    /* --------- Reduced Motion --------- */
+    /* ---------------- Reduced Motion ---------------- */
     @media (prefers-reduced-motion: reduce) {
       .veal-fade,
       .content-fade-in,
@@ -350,12 +392,15 @@
 
 <body>
   <div class="page">
-    <video class="bg-video" autoplay loop muted playsinline>
-      <source src="/Templia login screen video.mp4" type="video/mp4" />
+    <!-- Background video -->
+    <video class="bg-video" id="bgVideo" autoplay loop muted playsinline>
+      <source src="/Templia login screen video (1)_compressed copy.mp4" type="video/mp4" />
     </video>
 
+    <!-- Veil overlay -->
     <div id="veil" class="veil"></div>
 
+    <!-- Page content -->
     <div id="content" class="content">
       <!-- NAV -->
       <header class="container">
@@ -365,9 +410,8 @@
             <span class="muted" aria-hidden="true"></span>
           </div>
 
-          <!-- Update href or JS handler to your real sign-in route -->
-          <a class="btn" href="https://templia.app/notify" id="signInBtn">Get notified</a>
-
+          <!-- Replace href with your sign-in route if needed -->
+          <a class="btn" href="https://templia.app/notify" id="signInBtn">Sign In</a>
         </nav>
       </header>
 
@@ -381,12 +425,14 @@
               <path d="M19 12l.8 2.7L22.5 16l-2.7 1.3L19 20l-1-2.7L15.5 16l2.5-1.3L19 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
               <path d="M5 13l.7 2.2L8 16l-2.3.8L5 19l-.8-2.2L2 16l2.2-.8L5 13Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
             </svg>
-            <span>Nurture your love for God</span>
+            <span class="pill-text">Nurture your love for God</span>
           </div>
 
           <h1>
             Your Daily Journey<br />
-            <span class="text-gradient">To Spiritual Growth</span>
+            <span class="text-gradient">To Spiritual Growth</span><br />
+            <span class="with-text">with</span><br />
+            <img src="/templia_(3).gif" alt="Templia" class="templia-gif" />
           </h1>
 
           <p>
@@ -395,10 +441,10 @@
             stay consistent, and grow closer to God every day.
           </p>
 
-          <a class="btn" href="https://templia.app/notify" id="signInBtn">
-            Get updates
-            <!-- ArrowRight icon -->
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:20px;height:20px;">
+          <a class="btn btn-lg" href="https://templia.app/notify" id="startNowBtn">
+            Start Now
+            <!-- ArrowRight -->
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               <path d="M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -413,7 +459,7 @@
         </h2>
 
         <div class="grid">
-          <!-- Card 1 -->
+          <!-- Feature 1 -->
           <div class="feature-card glass-card">
             <div class="icon-box" aria-hidden="true">
               <!-- PenTool -->
@@ -426,7 +472,7 @@
             <p>Reflect on your thoughts and prayers with guided prompts. Track your spiritual journey and see how far you've come.</p>
           </div>
 
-          <!-- Card 2 -->
+          <!-- Feature 2 -->
           <div class="feature-card glass-card">
             <div class="icon-box" aria-hidden="true">
               <!-- BookOpen -->
@@ -439,7 +485,7 @@
             <p>Explore scripture with our AI-powered Bible chat feature. Get insights, context, and answers to deepen your understanding.</p>
           </div>
 
-          <!-- Card 3 -->
+          <!-- Feature 3 -->
           <div class="feature-card glass-card">
             <div class="icon-box" aria-hidden="true">
               <!-- Heart -->
@@ -451,7 +497,7 @@
             <p>Choose from curated activities designed to nurture your mind, body, and spirit. Build healthy daily habits.</p>
           </div>
 
-          <!-- Card 4 -->
+          <!-- Feature 4 -->
           <div class="feature-card glass-card">
             <div class="icon-box" aria-hidden="true">
               <!-- Users -->
@@ -466,7 +512,7 @@
             <p>Connect with other believers, share experiences, and grow together in faith through our supportive community.</p>
           </div>
 
-          <!-- Card 5 -->
+          <!-- Feature 5 -->
           <div class="feature-card glass-card">
             <div class="icon-box" aria-hidden="true">
               <!-- TrendingUp -->
@@ -479,7 +525,7 @@
             <p>Stay motivated with daily streaks. Build consistency and watch your spiritual discipline grow stronger each day.</p>
           </div>
 
-          <!-- Card 6 -->
+          <!-- Feature 6 -->
           <div class="feature-card glass-card">
             <div class="icon-box" aria-hidden="true">
               <!-- Shield -->
@@ -487,7 +533,7 @@
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
               </svg>
             </div>
-            <h3>Devotionals</h3>
+            <h3>Devotionals &amp; Journal Prompts</h3>
             <p>Read thought-provoking devotionals backed by scripture, coupled with Christian affirmations, Bible verses, and engaging journal prompts.</p>
           </div>
         </div>
@@ -495,51 +541,53 @@
 
       <!-- MEET OCTAVIA -->
       <section class="container section scroll-fade" id="octavia">
-        <div class="profile-card glass-card">
-          <div class="profile-row">
-            <div class="avatar-wrap">
-              <img src="IMG_5997.JPEG" alt="Octavia, Founder of Templia" />
-            </div>
+        <div class="profile-wrap">
+          <div class="profile-card glass-card">
+            <div class="profile-row">
+              <div class="avatar-ring">
+                <img src="/img_5997.jpeg" alt="Octavia, Founder of Templia" />
+              </div>
 
-            <div class="profile-text">
-              <h2>Meet Octavia</h2>
-              <p class="subtitle">Founder of Templia</p>
+              <div class="profile-text">
+                <h2>Meet Octavia</h2>
+                <p class="subtitle">Founder &amp; Developer of Templia</p>
 
-              <p>
-                After completing an Esther Fast in 2025, Octavia was blessed with inspiration from God to build a platform
-                that combines self-care with scripture. In obedience, Octavia created Templia to assist others in growing
-                their faith and love for God through practical yet entertaining methods.
-              </p>
+                <p>
+                  After completing an Esther Fast in 2025, Octavia was blessed with inspiration from God to build a platform that combines self-care with scripture.
+                  In obedience, Octavia created Templia to assist others in growing their faith and love for God through practical yet entertaining methods.
+                </p>
 
-              <p class="quote">
-                “Growing up, I've always been taught your mental and physical health are just as important as your spiritual health.”
-              </p>
+                <p class="quote">
+                  "Growing up, I've always been taught your mental and physical health are just as important as your spiritual health."
+                </p>
 
-              <p>
-                With Templia, people across the world can now engage in care that nurtures their relationship with God,
-                their body, their mind and their community.
-              </p>
+                <p>
+                  With Templia, people across the world can now engage in care that nurtures their relationship with God, their body, their mind and their community.
+                </p>
 
-              <p>
-                Her vision is to create a welcoming space where anyone can nurture their relationship with God through daily
-                habits, community support, and personal reflection.
-              </p>
+                <p>
+                  Her vision is to create a welcoming space where anyone can nurture their relationship with God through daily habits, community support, and personal reflection.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- CTA -->
-      <section class="container section scroll-fade cta" id="get-started">
-        <h2>Ready to Begin Your Journey?</h2>
-        <p>Join now to start your journey, one day at a time.</p>
+      <section class="container section scroll-fade" id="get-started">
+        <div class="cta-wrap">
+          <h2>Ready to Begin Your Journey?</h2>
+          <p>Join Templia today and build your faith, one day at a time.</p>
 
-        <a class="btn" href="https://templia.app/notify" id="signInBtn">Try our beta
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:24px;height:24px;">
-            <path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
+          <a class="btn btn-xl" href="https://templia.app/notify" id="ctaBtn">
+            Try our beta
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
       </section>
 
       <!-- FOOTER -->
@@ -548,7 +596,10 @@
           <div class="footer-row">
             <div class="footer-left">
               <img src="/Templiacrop.png" alt="Templia" />
-              <span class="muted">© 2024 Templia. All rights reserved.</span>
+              <span class="muted">
+                © 2024 Templia. All rights reserved. •{" "}
+                <button class="terms-link" id="termsPrivacyBtn" type="button">Terms &amp; Privacy</button>
+              </span>
             </div>
             <p class="muted footer-quote">"She is clothed with strength and dignity" - Proverbs 31:25</p>
           </div>
@@ -558,18 +609,17 @@
   </div>
 
   <script>
-    // Match React "mounted" behavior: fade in content and veil
+    // 1) Fade in content + veil (matches your mounted state)
     window.addEventListener('DOMContentLoaded', () => {
       const veil = document.getElementById('veil');
       const content = document.getElementById('content');
 
-      // slight delay like your setTimeout(30)
       setTimeout(() => {
         veil.classList.add('veal-fade');
         content.classList.add('content-fade-in');
       }, 30);
 
-      // Scroll reveal like your IntersectionObserver
+      // 2) Scroll reveal (matches IntersectionObserver behavior)
       const fadeEls = document.querySelectorAll('.scroll-fade');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -578,21 +628,15 @@
       }, { root: null, rootMargin: '0px', threshold: 0.1 });
 
       fadeEls.forEach(el => observer.observe(el));
-    });
 
-    // Optional: Replace these with your real sign-in behavior
-    // Example: window.location.href = "/signin";
-    document.getElementById('signInBtn')?.addEventListener('click', (e) => {
-      // e.preventDefault();
-      // window.location.href = "/signin";
-    });
-    document.getElementById('startNowBtn')?.addEventListener('click', (e) => {
-      // e.preventDefault();
-      // window.location.href = "/signin";
-    });
-    document.getElementById('ctaStartBtn')?.addEventListener('click', (e) => {
-      // e.preventDefault();
-      // window.location.href = "/signin";
+      // 3) "onShowTermsPrivacy" replacement
+      // Update destination as needed (e.g., "/terms" or "https://templia.app/terms")
+      const termsBtn = document.getElementById('termsPrivacyBtn');
+      termsBtn?.addEventListener('click', () => {
+        window.location.href = "https://templia.app/terms-privacy";
+      });
+
+      // Note: buttons are already <a href="..."> so no JS needed for onGetStarted.
     });
   </script>
 </body>
